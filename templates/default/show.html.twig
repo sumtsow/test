@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Product page{% endblock %}
 
 {% block body %}
 <div class="content">
     <h1>{{ product.getProductName() }}</h1>
+    {% for item in product.getBundledProducts() %}
+    <p>{{ item.getProductName() }}</p>
+    {% endfor %}
 </div>
 {% endblock %}

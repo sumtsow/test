@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductBundlesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class ProductBundles
      * @ORM\Column(type="date")
      */
     private $product_bundles_end_date;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=ProductData::class, mappedBy="productBundles")
+     */
+    private $productData;
+
+    public function __construct()
+    {
+        $this->productData = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +120,33 @@ class ProductBundles
     public function setProductBundlesEndDate(\DateTimeInterface $product_bundles_end_date): self
     {
         $this->product_bundles_end_date = $product_bundles_end_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductData>
+     */
+    public function getProductData(): Collection
+    {
+        return $this->productData;
+    }
+
+    public function addProductData(ProductData $productData): self
+    {
+        if (!$this->productData->contains($productData)) {
+            $this->productData[] = $productData;
+            $productData->addProductBundle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductData(ProductData $productData): self
+    {
+        if ($this->productData->removeElement($productData)) {
+            $productData->removeProductBundle($this);
+        }
 
         return $this;
     }

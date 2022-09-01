@@ -25,6 +25,9 @@ class DefaultController extends AbstractController
     public function show(ProductDataRepository $repo, int $id): Response
     {
         $product = $repo->find(intval($id));
+        //$bundles = $product->getProductBundles();
+        //$products = $bundles->first()->getProductData();
+        //var_dump($products); die();
         return $this->render('default/show.html.twig', [
             'product' => $product,
         ]);
